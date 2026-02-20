@@ -22,7 +22,7 @@
 | Config loader & workspace runner | ✅ Complete | Config parsing, workspace runner with terraform plan execution |
 | Terraform plan JSON parser | ✅ Complete | Parses resource_changes, diffs attributes, handles create/update/delete/replace |
 | Drift summary report & exit codes | ✅ Complete | Exit codes 0/1/2, human-readable table output, summary counts |
-| Slack webhook notification | 📋 Planned | |
+| Slack webhook notification | ✅ Complete | Env var or config support, summary format (not full table), silent on clean scans |
 
 ## What It Solves
 
