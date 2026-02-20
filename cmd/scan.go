@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/daemonship/driftwatch/internal/config"
+	"github.com/daemonship/driftwatch/internal/report"
 	"github.com/daemonship/driftwatch/internal/runner"
 	"github.com/spf13/cobra"
 )
@@ -41,34 +42,19 @@ Exit codes:
 		}
 
 		opts := runner.Options{Binary: tfBinary}
-		results := runner.RunAll(cfg.Workspaces, opts)
+		runnerResults := runner.RunAll(cfg.Workspaces, opts)
 
-		// Print results summary
-		var hasDrift, hasError bool
-		for _, r := range results {
-			if r.Err != nil {
-				hasError = true
-				fmt.Fprintf(os.Stderr, "Error scanning %s: %v\n", r.WorkspacePath, r.Err)
-				continue
-			}
-			if r.ExitCode == 2 {
-				hasDrift = true
-				fmt.Printf("Drift detected in %s\n", r.WorkspacePath)
-			} else if r.ExitCode == 0 {
-				fmt.Printf("No drift in %s\n", r.WorkspacePath)
-			} else {
-				hasError = true
-				fmt.Fprintf(os.Stderr, "Error in %s (exit code %d): %s\n", r.WorkspacePath, r.ExitCode, string(r.Stderr))
-			}
+		// Convert runner results to report results (parsing JSON)
+		results, err := report.WorkspaceResultsFromRunnerResults(runnerResults)
+		if err != nil {
+			return fmt.Errorf("processing results: %w", err)
 		}
 
-		// Set exit code
-		if hasError {
-			os.Exit(2)
-		}
-		if hasDrift {
-			os.Exit(1)
-		}
+		// Print the human-readable report
+		report.Print(os.Stdout, results)
+
+		// Set exit code based on results
+		os.Exit(report.ExitCode(results))
 		return nil
 	},
 }
