@@ -35,3 +35,6 @@ credentials.*
 # Go workspace
 go.work
 go.work.sum
+
+# Pipeline implementation notes
+TASK_*.md
