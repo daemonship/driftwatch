@@ -19,7 +19,7 @@
 | Feature | Status | Notes |
 |---------|--------|-------|
 | Project scaffold & CI | ✅ Complete | Go module, cobra CLI, goreleaser, GitHub Actions |
-| Config loader & workspace runner | 🚧 In Progress | Current task |
+| Config loader & workspace runner | ✅ Complete | Config parsing, workspace runner with terraform plan execution |
 | Terraform plan JSON parser | 📋 Planned | |
 | Drift summary report & exit codes | 📋 Planned | |
 | Slack webhook notification | 📋 Planned | |
