@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/daemonship/driftwatch/internal/config"
+	"github.com/daemonship/driftwatch/internal/notify"
 	"github.com/daemonship/driftwatch/internal/report"
 	"github.com/daemonship/driftwatch/internal/runner"
 	"github.com/spf13/cobra"
@@ -52,6 +53,19 @@ Exit codes:
 
 		// Print the human-readable report
 		report.Print(os.Stdout, results)
+
+		// Send Slack notification if configured
+		slackWebhook := cfg.SlackWebhook
+		if slackWebhook == "" {
+			slackWebhook = notify.WebhookFromEnv()
+		}
+		if slackWebhook != "" {
+			notifier := &notify.SlackNotifier{
+				WebhookURL: slackWebhook,
+				ErrOut:     os.Stderr,
+			}
+			notifier.Notify(results)
+		}
 
 		// Set exit code based on results
 		os.Exit(report.ExitCode(results))
