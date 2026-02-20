@@ -14,7 +14,7 @@
 
 ## Status
 
-> 🚧 In active development — not yet production ready
+> 🚀 Ready for early adopters
 
 | Feature | Status | Notes |
 |---------|--------|-------|
@@ -23,6 +23,7 @@
 | Terraform plan JSON parser | ✅ Complete | Parses resource_changes, diffs attributes, handles create/update/delete/replace |
 | Drift summary report & exit codes | ✅ Complete | Exit codes 0/1/2, human-readable table output, summary counts |
 | Slack webhook notification | ✅ Complete | Env var or config support, summary format (not full table), silent on clean scans |
+| Ship-check & hardening | ✅ Complete | .gitignore, Go 1.24 (stdlib vulns fixed), goreleaser v2 format, 82% mutation score |
 
 ## What It Solves
 
@@ -32,24 +33,48 @@ Small teams managing cloud infra with Terraform often discover drift only when t
 
 DevOps engineers or full-stack developers at startups and small teams managing cloud infra with Terraform.
 
-## Usage (coming soon)
+## Installation
+
+**Download a pre-built binary** (Linux/macOS/Windows, amd64/arm64):
 
 ```bash
-# Install (once released)
+# Linux amd64
 curl -L https://github.com/daemonship/driftwatch/releases/latest/download/driftwatch_linux_amd64.tar.gz | tar xz
 sudo mv driftwatch /usr/local/bin/
 
-# Configure your workspaces
-cp driftwatch.yml.example driftwatch.yml
-# edit driftwatch.yml to add your workspace paths
+# macOS arm64 (Apple Silicon)
+curl -L https://github.com/daemonship/driftwatch/releases/latest/download/driftwatch_darwin_arm64.tar.gz | tar xz
+sudo mv driftwatch /usr/local/bin/
+```
 
-# Scan for drift
+**Build from source** (requires Go 1.24+):
+
+```bash
+git clone https://github.com/daemonship/driftwatch.git
+cd driftwatch
+go build -o driftwatch .
+```
+
+## Usage
+
+```bash
+# 1. Copy the example config and add your workspace paths
+cp driftwatch.yml.example driftwatch.yml
+
+# 2. Scan all configured workspaces for drift
 driftwatch scan
 
 # Exit codes:
-#   0 — no drift
-#   1 — drift detected
-#   2 — scan error
+#   0 — no drift detected
+#   1 — drift detected in one or more workspaces
+#   2 — scan error (terraform not found, plan failed, etc.)
+```
+
+**Slack notifications** — set the webhook via env var (recommended) or config:
+
+```bash
+export DRIFTWATCH_SLACK_WEBHOOK=https://hooks.slack.com/services/YOUR/WEBHOOK/URL
+driftwatch scan
 ```
 
 ## Configuration
