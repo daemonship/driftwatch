@@ -20,8 +20,8 @@
 |---------|--------|-------|
 | Project scaffold & CI | ✅ Complete | Go module, cobra CLI, goreleaser, GitHub Actions |
 | Config loader & workspace runner | ✅ Complete | Config parsing, workspace runner with terraform plan execution |
-| Terraform plan JSON parser | 📋 Planned | |
-| Drift summary report & exit codes | 📋 Planned | |
+| Terraform plan JSON parser | ✅ Complete | Parses resource_changes, diffs attributes, handles create/update/delete/replace |
+| Drift summary report & exit codes | 🚧 In Progress | |
 | Slack webhook notification | 📋 Planned | |
 
 ## What It Solves
