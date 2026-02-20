@@ -14,7 +14,7 @@
 
 ## Status
 
-> 🚀 Ready for early adopters
+> 🚀 v0.1.0 released — [Download now](https://github.com/daemonship/driftwatch/releases/latest)
 
 | Feature | Status | Notes |
 |---------|--------|-------|
@@ -24,6 +24,7 @@
 | Drift summary report & exit codes | ✅ Complete | Exit codes 0/1/2, human-readable table output, summary counts |
 | Slack webhook notification | ✅ Complete | Env var or config support, summary format (not full table), silent on clean scans |
 | Ship-check & hardening | ✅ Complete | .gitignore, Go 1.24 (stdlib vulns fixed), goreleaser v2 format, 82% mutation score |
+| v0.1.0 release | ✅ Complete | Binaries for linux/darwin amd64/arm64, published to GitHub Releases |
 
 ## What It Solves
 
