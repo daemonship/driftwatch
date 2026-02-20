@@ -1,0 +1,17 @@
+# driftwatch.yml.example — copy to driftwatch.yml and edit for your setup
+#
+# driftwatch scans these Terraform workspace directories for drift.
+# Each path must contain a Terraform root module (a directory with .tf files
+# that has already been initialized with `terraform init`).
+
+workspaces:
+  - ./infra/staging
+  - ./infra/production
+
+# Optional: Slack incoming webhook URL for drift notifications.
+# Overridden by DRIFTWATCH_SLACK_WEBHOOK environment variable if set.
+# Silent (no POST) when no drift is detected.
+# slack_webhook: https://hooks.slack.com/services/YOUR/WEBHOOK/URL
+
+# Optional: use OpenTofu instead of Terraform.
+# binary: tofu

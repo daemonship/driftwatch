@@ -1,0 +1,37 @@
+# Binaries
+driftwatch
+driftwatch.exe
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Build output
+dist/
+
+# Test artifacts
+*.test
+*.out
+coverage.out
+
+# Editor artifacts
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+secrets.*
+credentials.*
+
+# Go workspace
+go.work
+go.work.sum

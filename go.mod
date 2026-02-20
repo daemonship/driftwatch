@@ -1,6 +1,6 @@
 module github.com/daemonship/driftwatch
 
-go 1.23.6
+go 1.24
 
 require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
