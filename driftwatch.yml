@@ -1,0 +1,19 @@
+# driftwatch.yml — example configuration
+#
+# Run: driftwatch scan --config driftwatch.yml
+
+# workspaces: list of Terraform workspace directories to scan.
+# Each path is passed to 'terraform plan -json -detailed-exitcode'.
+# Relative paths are resolved from the directory containing this config file.
+workspaces:
+  - ./infra/staging
+  - ./infra/production
+
+# slack_webhook: (optional) Slack incoming webhook URL.
+# Overridden at runtime by DRIFTWATCH_SLACK_WEBHOOK environment variable.
+# slack_webhook: https://hooks.slack.com/services/YOUR/WEBHOOK/URL
+
+# binary: (optional) path or name of the terraform binary.
+# Defaults to "terraform". Use "tofu" for OpenTofu.
+# Overridden at runtime by --binary CLI flag.
+# binary: terraform
