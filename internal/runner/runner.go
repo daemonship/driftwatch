@@ -1,6 +1,12 @@
 // Package runner executes terraform plan against each configured workspace.
 package runner
 
+import (
+	"bytes"
+	"fmt"
+	"os/exec"
+)
+
 // Result holds the outcome of running terraform plan in a single workspace.
 type Result struct {
 	// WorkspacePath is the directory of the workspace that was scanned.
@@ -25,12 +31,45 @@ type Options struct {
 // RunWorkspace executes terraform plan -json -detailed-exitcode in the given
 // workspace directory and returns the result.
 func RunWorkspace(workspacePath string, opts Options) Result {
-	// TODO: implement in Task 2
-	return Result{WorkspacePath: workspacePath}
+	result := Result{WorkspacePath: workspacePath}
+
+	binary := opts.Binary
+	if binary == "" {
+		binary = "terraform"
+	}
+
+	cmd := exec.Command(binary, "plan", "-json", "-detailed-exitcode")
+	cmd.Dir = workspacePath
+
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	err := cmd.Run()
+	result.PlanOutput = stdout.Bytes()
+	result.Stderr = stderr.Bytes()
+
+	if exitErr, ok := err.(*exec.ExitError); ok {
+		// Command ran but exited with non-zero code
+		result.ExitCode = exitErr.ExitCode()
+		result.Err = nil // Exit code 2 is not an error for us, it's drift detected
+	} else if err != nil {
+		// Command failed to run (binary not found, etc.)
+		result.Err = fmt.Errorf("running terraform plan in %s: %w", workspacePath, err)
+		result.ExitCode = 2 // Treat as scan error
+	} else {
+		result.ExitCode = 0
+	}
+
+	return result
 }
 
 // RunAll iterates workspacePaths sequentially and returns a result per workspace.
 func RunAll(workspacePaths []string, opts Options) []Result {
-	// TODO: implement in Task 2
-	return nil
+	results := make([]Result, 0, len(workspacePaths))
+	for _, path := range workspacePaths {
+		result := RunWorkspace(path, opts)
+		results = append(results, result)
+	}
+	return results
 }
